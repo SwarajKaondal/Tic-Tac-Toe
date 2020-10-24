@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="utf-8">
+       <title>Tic Tac Toe</title>
+
+       {% load staticfiles %}
+       
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+       <link rel="stylesheet" type="text/css" href="{% static 'style.css'%}" />
+       <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+  <nav class="navbar navbar-custom"> 
+    <span style="color: #FBFCFF;font-size: x-large;font-family: cursive ;">
+      Tic Tac Toe
+    </span>
+</nav> 
+<div class="botChance">
+  <center>
+  <button onclick="newGame()" type="button" class="btn btn-primary main">New Game</button>
+  <br>
+  <br>
+  <button id ="fchance" onclick = "botChance(this)"type="button" class="btn btn-primary main">Let the Bot play first?</button>
+</center>
+</div>
+  <div class = "board">
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button id="1" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+          <button id="2" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+          <button id="3" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+        </div>
+    </div>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button id="4" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+        <button id="5" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+        <button id="6" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+      </div>
+    </div>
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    
+      <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button id="7" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+        <button id="8" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+        <button id="9" onclick="handleEntry(this)" type="button" class="btn btn-dark"> </button>
+      </div>
+    </div>
+    
+  </div>
+  <div class="result">
+  <span style = "display: none" id = "x_wins"> Player wins!!</span>
+  <span style = "display: none" id = "o_wins"> Bot wins!!</span>
+  <span style = "display: none" id = "tie"> It's a Tie!!</span>
+</div>
+  <footer>       
+</footer>
+<script>
+  function handleEntry(element){
+    var id = element.id;
+    element.innerHTML = "X";
+    element.disabled = true;
+    
+    document.getElementById('fchance').disabled = true;
+    var i;
+    var board = [];
+    board[0] = " ";
+    for (i = 1; i < 10; i++) {
+      board[i] = document.getElementById(i).innerHTML;
+    }
+    console.log(board);
+
+    $.ajax({
+        url: '/ajax/userInput/',
+        data: {
+          board : JSON.stringify(board)
+        },
+        dataType: 'json',
+        success: function (data) {
+          if(data.move != -1){
+            element = document.getElementById(data.move);
+            element.innerHTML = "O";
+            element.disabled = true;
+          }
+          if(data.winner != false){
+            for (i = 1; i < 10; i++) {
+              document.getElementById(i).disabled = true;
+            }
+            if(data.winner == 'X'){
+              document.getElementById('x_wins').style.display = 'block';
+            }
+            else if(data.winner == 'O'){
+              document.getElementById('o_wins').style.display = 'block';
+            }
+            else{
+              document.getElementById('tie').style.display = 'block';
+            }
+            console.log("Winner is: "+ data.winner);
+          }
+          console.log(data)
+          }
+        })
+  }
+
+  function botChance(element){
+    pos = document.getElementById("1");
+    pos.innerHTML = 'O';
+    pos.disabled = true;
+    element.disabled = true;
+  }
+
+  function newGame(){
+    for (i = 1; i < 10; i++) {
+      element = document.getElementById(i);
+      element.innerHTML = " ";
+      element.disabled = false;
+
+    }
+    document.getElementById('x_wins').style.display = 'none';
+    document.getElementById('o_wins').style.display = 'none';
+    document.getElementById('tie').style.display = 'none';
+    document.getElementById('fchance').disabled = false;
+  }
+</script>
+
+</body>
+</html>

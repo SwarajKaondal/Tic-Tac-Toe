@@ -1,0 +1,57 @@
+body {
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
+  height: 18cm;
+  color: #cfdbd5;
+}
+
+.board {
+  padding-left: 41%;
+  padding-top: 50px;
+  text-align: center;
+}
+
+span {
+  padding-left: 44%;
+}
+
+.result {
+  padding-top: 10px;
+  font-size: 20px;
+  color: black;
+  font-family: cursive;
+  padding-left: 50px;
+}
+.navbar-custom {
+  background-color: #353535;
+}
+
+.btn {
+  width: 75px;
+  height: 75px;
+  border-radius: 0%;
+  margin: 2px;
+  margin-bottom: 0px;
+}
+
+.btn.btn-dark {
+  color: white;
+}
+
+.btn.btn-dark:disabled,
+button[disabled] {
+  background-color: black;
+}
+
+.botChance {
+  padding-top: 50px;
+  padding-right: 35px;
+  font-size: 20;
+}
+
+.main {
+  width: auto;
+  height: 40px;
+  font-family: cursive;
+  border-radius: 5%;
+}
